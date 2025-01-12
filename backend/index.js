@@ -127,6 +127,23 @@ app.post("/register", (req, res) => {
     res.status(201).json({ message: "Admin registered successfully." });
   });
 });
+app.post("/login", (req, res) => {
+  const { email, pass } = req.body;
+
+  const query = "SELECT * FROM admin WHERE email = ? AND pass = ?";
+  db.query(query, [email, pass], (err, results) => {
+    if (err) {
+      return res.status(500).json({ message: "Internal server error" });
+    }
+    if (results.length > 0) {
+      return res
+        .status(200)
+        .json({ message: "Login successful", user: results[0] });
+    } else {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+  });
+});
 
 app.listen(port, () => {
   console.log(`Servernya di http://localhost:${port}`);

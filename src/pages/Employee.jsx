@@ -4,6 +4,7 @@ import Sidebar from "../components/Sidebar";
 import { FaCirclePlus } from "react-icons/fa6";
 import toast from "react-hot-toast";
 import { useParams } from "react-router-dom";
+import Header2 from "../components/Header2";
 
 const Employee = () => {
   const { id } = useParams();
@@ -106,20 +107,7 @@ const Employee = () => {
     <div className="flex bg-gradient-to-b from-[#004D40] via-[#00897B] to-[#4DB6AC]">
       <Sidebar />
       <div className="ml-64 w-full border-l-2 border-black">
-        <div className="p-5 flex items-center justify-between w-full">
-          <img src="/logo_tulisan.svg" alt="" className="mx-auto" />
-          <div className="flex items-center gap-3 float-right">
-            <div>
-              <p>Situ Nur</p>
-              <span className="text-sm text-black">Admin</span>
-            </div>
-            <img
-              src="/avatar.png"
-              alt="User"
-              className="w-10 h-10 rounded-full"
-            />
-          </div>
-        </div>
+        <Header2/>
         <div className="flex justify-between px-20">
           <h2 className="text-white font-bold">Employee</h2>
           <div className="flex gap-2 items-center">

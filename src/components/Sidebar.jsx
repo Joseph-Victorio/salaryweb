@@ -46,7 +46,7 @@ const Sidebar = () => {
         </ul>
       </nav>
       <button className="text-white mt-auto px-5 hover:text-red-500">
-        Logout
+        <a href="/">Logout</a>
       </button>
     </div>
   );

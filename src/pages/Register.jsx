@@ -107,8 +107,8 @@ const Register = () => {
           </button>
         </div>
 
-        <a href="/login" className="text-center w-full">
-          <p className="text-[#2500F4] font-bold">LOGIN PEGAWAI</p>
+        <a href="/" className="text-center w-full">
+          <p className="text-[#2500F4] font-bold">LOGIN ADMIN</p>
         </a>
       </form>
     </div>

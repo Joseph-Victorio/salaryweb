@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaCirclePlus } from "react-icons/fa6";
+import Header2 from "../components/Header2";
 
 const Task = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -19,17 +20,7 @@ const Task = () => {
       <main className="ml-64 w-full border-l-2 border-black p-5">
         <div className="p-5 flex items-center justify-between w-full">
           <img src="/logo_tulisan.svg" alt="" className="mx-auto" />
-          <div className="flex items-center gap-3 float-right">
-            <div>
-              <p>Situ Nur</p>
-              <span className="text-sm text-black">Admin</span>
-            </div>
-            <img
-              src="/avatar.png"
-              alt="User"
-              className="w-10 h-10 rounded-full"
-            />
-          </div>
+          <Header2/>
         </div>
         <div className="flex justify-between">
           <h2 className="text-white font-bold">Tugas</h2>
