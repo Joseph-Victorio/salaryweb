@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { FaCirclePlus } from "react-icons/fa6";
 import Header2 from "../components/Header2";
+import { FaFolder } from "react-icons/fa";
 
 const Task = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,13 +16,10 @@ const Task = () => {
   };
 
   return (
-    <div className="flex bg-gradient-to-b from-[#004D40] via-[#00897B] to-[#4DB6AC]">
+    <div className="flex bg-gradient-to-b from-[#004D40] via-[#00897B] to-[#4DB6AC] min-h-screen ">
       <Sidebar />
       <main className="ml-64 w-full border-l-2 border-black p-5">
-        <div className="p-5 flex items-center justify-between w-full">
-          <img src="/logo_tulisan.svg" alt="" className="mx-auto" />
-          <Header2/>
-        </div>
+        <Header2 />
         <div className="flex justify-between">
           <h2 className="text-white font-bold">Tugas</h2>
           <div className="flex gap-2 items-center">
@@ -43,6 +41,55 @@ const Task = () => {
             </button>
           </div>
         </div>
+        <table className="w-full">
+          <tr className="text-left text-white border-b-2 border-black">
+            <th>Info</th>
+            <th>Tanggal</th>
+            <th></th>
+          </tr>
+          <tbody>
+            <tr className="border-b-2 border-black ">
+              <td className="p-2">
+                <div className="flex gap-1 items-center">
+                  <FaFolder className="text-2xl"/>
+                  <p className="text-green-500">Project 1</p>
+                </div>
+              </td>
+              <td>12 Desember 2024</td>
+              <td className="text-green-500"><p className="text-green-500"></p>Sukses</td>
+            </tr>
+            <tr className="border-b-2 border-black ">
+              <td className="p-2">
+                <div className="flex gap-1 items-center">
+                  <FaFolder className="text-2xl"/>
+                  <p className="text-green-500">Project 2</p>
+                </div>
+              </td>
+              <td>14 Desember 2024</td>
+              <td className="text-green-500"><p className="text-green-500"></p>Sukses</td>
+            </tr>
+            <tr className="border-b-2 border-black ">
+              <td className="p-2">
+                <div className="flex gap-1 items-center">
+                  <FaFolder className="text-2xl"/>
+                  <p className="text-green-500">Project 3</p>
+                </div>
+              </td>
+              <td>15 Desember 2024</td>
+              <td className="text-red-500"><p className="text-red-500"></p> Not Yet</td>
+            </tr>
+            <tr className="border-b-2 border-black ">
+              <td className="p-2">
+                <div className="flex gap-1 items-center">
+                  <FaFolder className="text-2xl"/>
+                  <p className="text-green-500">Project 4</p>
+                </div>
+              </td>
+              <td>16 Desember 2024</td>
+              <td className="text-red-500"><p className="text-red-500"></p> Not Yet</td>
+            </tr>
+          </tbody>
+        </table>
       </main>
 
       {/* Modal */}
