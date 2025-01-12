@@ -3,10 +3,12 @@ import axios from "axios";
 import Sidebar from "../components/Sidebar";
 import { FaCirclePlus } from "react-icons/fa6";
 import toast from "react-hot-toast";
+import { useParams } from "react-router-dom";
 
 const Employee = () => {
+  const { id } = useParams();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalStep, setModalStep] = useState(1); // Track modal step
+  const [modalStep, setModalStep] = useState(1);
   const [employees, setEmployees] = useState([]);
   const [formData, setFormData] = useState({
     username: "",
@@ -89,6 +91,16 @@ const Employee = () => {
   useEffect(() => {
     fetchEmployees();
   }, []);
+  const hapus = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/karyawan/${id}`);
+      fetchEmployees();
+      toast.success("Karyawan berhasil dihapus!");
+    } catch (error) {
+      console.error("Error deleting employee:", error);
+      toast.error("Gagal menghapus karyawan!");
+    }
+  };
 
   return (
     <div className="flex bg-gradient-to-b from-[#004D40] via-[#00897B] to-[#4DB6AC]">
@@ -309,10 +321,7 @@ const Employee = () => {
                         />
                       </div>
                     </div>
-                    <div className="flex gap-10 md:flex-row flex-col">
-                      
-                      
-                    </div>
+                    <div className="flex gap-10 md:flex-row flex-col"></div>
                   </div>
                   <div className="flex justify-between mt-4">
                     <button
@@ -336,18 +345,18 @@ const Employee = () => {
                 <h3 className="text-xl font-bold mb-4">Tambah Gaji</h3>
                 <form onSubmit={handleFormSubmit}>
                   <div className="flex gap-5 flex-col">
-                  <div className="mb-4">
-                        <label className="block text-sm font-medium text-gray-700 text-center">
-                          Pangkat
-                        </label>
-                        <input
-                          type="text"
-                          className="mt-1 block rounded-md border-black border-2 shadow-sm focus:border-teal-500 focus:ring-teal-500  pl-2 mx-auto"
-                          name="pangkat"
-                          value={formData.pangkat}
-                          onChange={handleInputChange}
-                        />
-                      </div>
+                    <div className="mb-4">
+                      <label className="block text-sm font-medium text-gray-700 text-center">
+                        Pangkat
+                      </label>
+                      <input
+                        type="text"
+                        className="mt-1 block rounded-md border-black border-2 shadow-sm focus:border-teal-500 focus:ring-teal-500  pl-2 mx-auto"
+                        name="pangkat"
+                        value={formData.pangkat}
+                        onChange={handleInputChange}
+                      />
+                    </div>
                     <div className="mb-4 w-full">
                       <label className="block text-sm font-medium text-gray-700 mx-auto text-center">
                         Gaji
