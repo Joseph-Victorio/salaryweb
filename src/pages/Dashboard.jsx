@@ -11,21 +11,21 @@ const Dashboard = () => {
       id: "8475987092834",
       pangkat: "Manager",
       time: "13:00",
-      avatar: "/avatar1.png",
+      avatar: "/avatar.png",
     },
     {
       name: "Jamal Alim",
       id: "82345653534634",
       pangkat: "Staff",
       time: "13:00",
-      avatar: "/avatar2.png",
+      avatar: "/avatar.png",
     },
     {
       name: "Udin",
       id: "34648394839834",
       pangkat: "Front End",
       time: "13:00",
-      avatar: "/avatar3.png",
+      avatar: "/avatar.png",
     },
   ];
 
@@ -75,18 +75,26 @@ const Dashboard = () => {
               </div>
             </div>
             {/* employee info */}
-            <div className=" w-[300px]">
+            <div className=" w-[350px]">
               <p className="text-black font-bold text-xl mb-5">Employee</p>
-              <div className="flex justify-content w-full gap-14 mb-2">
+              <div className="flex justify-content w-full gap-20 mb-2">
                 <p className="text-white font-bold">Employee Info</p>
                 <p className="text-white">Time </p>
               </div>
-              <div className="flex justify-content">
-                <div className="flex">
+              <div className="flex justify-content gap-16 items-center border-2 rounded-lg p-1 border-black">
+                <div className="flex items-center gap-2">
                     <img src="/avatar.png" alt="" />
                     <div className="flex flex-col">
-                        
+                        {/* nama */}
+                        <p className="font-bold text-black">Budi Alam</p>
+                        {/* kerjaannya */}
+                        <p className="text-white">UI design</p>
                     </div>
+                </div>
+                {/* waktu */}
+                <div className="flex gap-5">
+                    <span className="bg-white rounded-lg px-2">08:00</span>
+                    <span className="bg-white rounded-lg px-2">12:00</span>
                 </div>
               </div>
             </div>

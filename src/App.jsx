@@ -3,6 +3,9 @@ import Register from "./pages/Register"
 import Login from "./pages/Login"
 import LoginKaryawan from "./pages/LoginKaryawan"
 import Dashboard from "./pages/Dashboard"
+import Employee from "./pages/Employee"
+import Task from "./pages/Task"
+import Salary from "./pages/Salary"
 
 
 function App() {
@@ -15,6 +18,9 @@ function App() {
         <Route path="/login" element={<Login/>}></Route>
         <Route path="/login-karyawan" element={<LoginKaryawan/>}></Route>
         <Route path="/admin/dashboard" element={<Dashboard/>}></Route>
+        <Route path="/admin/employee" element={<Employee/>}></Route>
+        <Route path="/admin/task" element={<Task/>}></Route>
+        <Route path="/admin/salary" element={<Salary/>}></Route>
       </Routes>
     </>
   )

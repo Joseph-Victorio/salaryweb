@@ -7,18 +7,41 @@ const Sidebar = () => {
       </div>
       <nav className="w-full">
         <ul className="text-lg space-y-5">
-          <li className="flex items-center gap-3 px-5 hover:text-primary">
+          <li className="flex items-center gap-3 px-5 group ">
             <img src="/dashboard.svg" alt="" />
-            <span className="text-black">Dashboard</span>
+            <a
+              href="/admin/dashboard"
+              className="text-black group-hover:border-b-2 group-hover:border-black border-transparent border-b-2 transition-all ease-in-out duration-300"
+            >
+              Dashboard
+            </a>
           </li>
-          <li className="flex items-center gap-3 px-5 hover:text-primary">
-            <span>Employee</span>
+          <li className="flex items-center gap-3 px-5 hover:text-primary group">
+            <img src="/emplyees.svg" alt="" />
+            <a
+              href="/admin/employee"
+              className="text-black group-hover:border-b-2 group-hover:border-black border-transparent border-b-2 transition-all ease-in-out duration-300"
+            >
+              Employee
+            </a>
           </li>
-          <li className="flex items-center gap-3 px-5 hover:text-primary">
-            <span>Tasks</span>
+          <li className="flex items-center gap-3 px-5 hover:text-primary group">
+            <img src="/task.svg" alt="" />
+            <a
+              href="/admin/tasks"
+              className="text-black group-hover:border-b-2 group-hover:border-black border-transparent border-b-2 transition-all ease-in-out duration-300"
+            >
+              Tasks
+            </a>
           </li>
-          <li className="flex items-center gap-3 px-5 hover:text-primary">
-            <span>Salary</span>
+          <li className="flex items-center gap-3 px-5 hover:text-primary group">
+            <img src="/money.svg" alt="" />
+            <a
+              href="/admin/salary"
+              className="text-black group-hover:border-b-2 group-hover:border-black border-transparent border-b-2 transition-all ease-in-out duration-300"
+            >
+              Salary
+            </a>
           </li>
         </ul>
       </nav>
