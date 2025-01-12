@@ -43,15 +43,18 @@ app.post("/karyawan", (req, res) => {
     nomor_telp,
     jenis_kelamin,
     alamat,
+    posisi,
+    pangkat,
+    gaji,
   } = req.body;
   const query = `
     INSERT INTO karyawan 
-    (username, email, pass, nama_depan, nama_belakang, nomor_telp, jenis_kelamin, alamat) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    (username, email, pass, nama_depan, nama_belakang, nomor_telp, jenis_kelamin, alamat, posisi,pangkat,gaji) 
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `;
   db.query(
     query,
-    [username, email, pass, nama_depan, nama_belakang, nomor_telp, jenis_kelamin, alamat],
+    [username, email, pass, nama_depan, nama_belakang, nomor_telp, jenis_kelamin, alamat,posisi,pangkat, gaji],
     (err, results) => {
       if (err) throw err;
       res.json({ message: "Karyawan added successfully", id: results.insertId });
