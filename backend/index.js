@@ -68,7 +68,10 @@ app.post("/karyawan", (req, res) => {
     ],
     (err, results) => {
       if (err) throw err;
-      res.json({ message: "Karyawan added successfully", id: results.insertId });
+      res.json({
+        message: "Karyawan added successfully",
+        id: results.insertId,
+      });
     }
   );
 });
@@ -102,6 +105,28 @@ app.put("/karyawan/:id", (req, res) => {
   });
 });
 
+// Register admin
+app.post("/register", (req, res) => {
+  const { nama, nama_perusahaan, email, pass } = req.body;
+
+  if (!nama || !nama_perusahaan || !email || !pass) {
+    return res.status(400).json({ message: "All fields are required." });
+  }
+
+  const query = `
+      INSERT INTO admin (nama, nama_perusahaan, email, pass)
+      VALUES (?, ?, ?, ?)
+    `;
+  db.query(query, [nama, nama_perusahaan, email, pass], (err, result) => {
+    if (err) {
+      if (err.code === "ER_DUP_ENTRY") {
+        return res.status(400).json({ message: "Email already exists." });
+      }
+      throw err;
+    }
+    res.status(201).json({ message: "Admin registered successfully." });
+  });
+});
 
 app.listen(port, () => {
   console.log(`Servernya di http://localhost:${port}`);
