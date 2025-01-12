@@ -28,7 +28,7 @@ const Sidebar = () => {
           <li className="flex items-center gap-3 px-5 hover:text-primary group">
             <img src="/task.svg" alt="" />
             <a
-              href="/admin/tasks"
+              href="/admin/task"
               className="text-black group-hover:border-b-2 group-hover:border-black border-transparent border-b-2 transition-all ease-in-out duration-300"
             >
               Tasks
