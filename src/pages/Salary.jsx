@@ -9,31 +9,25 @@ const Salary = () => {
     const fetchEmployees = async () => {
       try {
         const response = await axios.get("http://localhost:5000/karyawan");
-        const savedEmployees = JSON.parse(localStorage.getItem("employees"));
-        
-        if (savedEmployees) {
-          setEmployees(savedEmployees);
-        } else {
-          const employeesWithStatus = response.data.map((employee) => ({
-            ...employee,
-            paid: false,
-          }));
-          setEmployees(employeesWithStatus);
-        }
+        setEmployees(response.data);
       } catch (error) {
         console.error("Error fetching employees:", error);
       }
     };
     fetchEmployees();
   }, []);
-
-  const handlePay = (employeeId) => {
-    const updatedEmployees = employees.map((employee) =>
-      employee.id === employeeId ? { ...employee, paid: true } : employee
-    );
-
-    localStorage.setItem("employees", JSON.stringify(updatedEmployees));
-    setEmployees(updatedEmployees);
+  const handlePay = async (employeeId) => {
+    try {
+      const response = await axios.put(
+        `http://localhost:5000/karyawan/${employeeId}`,
+        {
+          status: "Paid", // Ensure this field is correct
+        }
+      );
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error updating payment status:", error);
+    }
   };
 
   return (
@@ -77,12 +71,12 @@ const Salary = () => {
             <table className="w-full bg-foreground text-white rounded-lg shadow-md">
               <thead>
                 <tr className="text-left bg-primary text-black">
-                  <th className="p-3  border-b">Employee</th>
-                  <th className="p-3  border-b">Employee ID</th>
-                  <th className="p-3  border-b">Pangkat</th>
-                  <th className="p-3  border-b text-center">Gaji</th>
-                  <th className="p-3  border-b">Status</th>
-                  <th className="p-3  border-b"></th>
+                  <th className="p-3 border-b">Employee</th>
+                  <th className="p-3 border-b">Employee ID</th>
+                  <th className="p-3 border-b">Pangkat</th>
+                  <th className="p-3 border-b text-center">Gaji</th>
+                  <th className="p-3 border-b">Status</th>
+                  <th className="p-3 border-b"></th>
                 </tr>
               </thead>
               <tbody>
@@ -112,7 +106,7 @@ const Salary = () => {
                       }).format(employee.gaji)}
                     </td>
                     <td className="p-3 border-b">
-                      {employee.paid ? (
+                      {employee.status == "Paid" ? (
                         <p className="text-green-500">Sukses</p>
                       ) : (
                         <p className="text-red-500">Pending</p>
