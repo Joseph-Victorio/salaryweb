@@ -145,6 +145,24 @@ app.post("/login", (req, res) => {
   });
 });
 
+app.get("/tasks", (req, res) => {
+  const query = "SELECT * FROM tasks";
+  db.query(query, (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json(results);
+  });
+});
+
+app.post("/tasks", (req, res) => {
+  const { nama_tugas, tanggal, status } = req.body;
+  const query =
+    "INSERT INTO tasks (nama_tugas, tanggal, status) VALUES (?, ?, ?)";
+  db.query(query, [nama_tugas, tanggal, status], (err, results) => {
+    if (err) return res.status(500).send(err);
+    res.json({ message: "Task added successfully.", taskId: results.insertId });
+  });
+});
+
 app.listen(port, () => {
   console.log(`Servernya di http://localhost:${port}`);
 });
