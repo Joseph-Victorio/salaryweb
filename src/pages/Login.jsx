@@ -91,7 +91,7 @@ const Login = () => {
         <a href="/register" className="text-center w-full">
           <p className="text-white font-bold">REGISTER</p>
         </a>
-        <a href="/login-karyawan">
+        <a href="/login-karyawan" className="text-center w-full">
          
           <p className="text-white font-bold">LOGIN KARYAWAN</p>
         </a>
