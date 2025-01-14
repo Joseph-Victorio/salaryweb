@@ -10,7 +10,7 @@ const Task = () => {
   const [newTask, setNewTask] = useState({ nama_tugas: "", tanggal: "", status: "Not Yet" });
   const [searchTerm, setSearchTerm] = useState("");
 
-  const API_URL = "http://localhost:5000/tasks"; // Replace with your backend URL
+  const API_URL = "http://localhost:5000/tasks"; 
 
   // Fetch tasks from the API
   const fetchTasks = async () => {
