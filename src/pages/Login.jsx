@@ -90,6 +90,7 @@ const Login = () => {
         </div>
         <a href="/register" className="text-center w-full">
           <p className="text-white font-bold">REGISTER</p>
+          <p className="text-white font-bold">LOGIN KARYAWAN</p>
         </a>
       </form>
     </div>

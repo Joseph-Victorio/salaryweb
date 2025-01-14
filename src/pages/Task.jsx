@@ -89,7 +89,6 @@ const Task = () => {
               <th>Info</th>
               <th>Tanggal</th>
               <th>Status</th>
-              <th>Aksi</th>
             </tr>
           </thead>
           <tbody>

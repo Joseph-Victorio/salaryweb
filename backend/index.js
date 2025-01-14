@@ -22,7 +22,7 @@ db.connect((err) => {
   console.log("Nyambung nih.");
 });
 
-// Fetch all karyawan
+
 app.get("/karyawan", (req, res) => {
   const query = "SELECT * FROM karyawan";
   db.query(query, (err, results) => {
@@ -31,7 +31,7 @@ app.get("/karyawan", (req, res) => {
   });
 });
 
-// Add a new karyawan
+
 app.post("/karyawan", (req, res) => {
   const {
     username,
@@ -76,7 +76,7 @@ app.post("/karyawan", (req, res) => {
   );
 });
 
-// Delete a karyawan
+
 app.delete("/karyawan/:id", (req, res) => {
   const { id } = req.params;
   const query = "DELETE FROM karyawan WHERE id = ?";
@@ -86,7 +86,7 @@ app.delete("/karyawan/:id", (req, res) => {
   });
 });
 
-// Update karyawan status
+
 app.put("/karyawan/:id", (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -104,6 +104,27 @@ app.put("/karyawan/:id", (req, res) => {
     res.json({ message: "Status updated successfully" });
   });
 });
+
+app.get("/karyawan/:username", (req, res) => {
+  const username = req.params.username;
+
+  const query = "SELECT * FROM karyawan WHERE username = ?";
+  db.query(query, [username], (err, results) => {
+    if (err) {
+      console.error("Error fetching data:", err);
+      return res.status(500).send("Server error occurred");
+    }
+
+    if (results.length === 0) {
+      return res.status(404).send("Karyawan not found");
+    }
+
+    res.json(results[0]);
+  });
+});
+
+
+
 
 // Register admin
 app.post("/register", (req, res) => {
@@ -163,6 +184,113 @@ app.post("/tasks", (req, res) => {
   });
 });
 
+app.put("/tasks/:id", (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  const query = "UPDATE tasks SET status = ? WHERE id = ?";
+  db.query(query, [status, id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ message: "Failed to update task status." });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "Task not found." });
+    }
+
+    res.json({ message: "Task status updated successfully." });
+  });
+});
+
+app.put("/absen", (req, res) => {
+  const { username, waktu, type } = req.body;
+  const columnToUpdate = type === "IN" ? "jam_masuk" : "jam_keluar";
+
+  const query = `
+    UPDATE karyawan
+    SET ${columnToUpdate} = ?
+    WHERE username = ?
+  `;
+  db.query(query, [waktu, username], (err, result) => {
+    if (err) {
+      console.error("Error updating attendance:", err);
+      return res.status(500).json({ message: "Error updating attendance" });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json({ message: `${columnToUpdate} updated successfully!` });
+  });
+});
+
+app.get('/absen/:username', (req, res) => {
+  const { username } = req.params;
+
+  const query = "SELECT jam_masuk, jam_keluar FROM karyawan WHERE username = ?";
+  
+  db.query(query, [username], (err, results) => {
+    if (err) {
+      console.error("Error fetching attendance:", err);
+      return res.status(500).json({ message: "Server error" });
+    }
+
+    if (results.length > 0) {
+      res.json({
+        jamMasuk: results[0].jam_masuk,  
+        jamKeluar: results[0].jam_keluar, 
+      });
+    } else {
+      res.status(404).json({ message: "Data absen tidak ditemukan" });
+    }
+  });
+});
+
+
+
+
+app.post("/login-karyawan", (req, res) => {
+  const { username, pass } = req.body;
+
+  if (!username || !pass) {
+    return res.status(400).json({
+      success: false,
+      message: "Username and password are required.",
+    });
+  }
+
+  const query = "SELECT * FROM karyawan WHERE username = ? AND pass = ?";
+  db.query(query, [username, pass], (err, result) => {
+    if (err) {
+      console.error("Database query error:", err);
+      return res.status(500).json({
+        success: false,
+        message: "Database query failed.",
+      });
+    }
+
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Invalid credentials.",
+      });
+    }
+
+    const user = result[0];
+
+    res.json({
+      success: true,
+      message: "Login successful",
+      data: {
+        username: user.username,
+        nama_depan: user.nama_depan,
+        nama_belakang: user.nama_belakang,
+        posisi: user.posisi,
+      },
+    });
+  });
+});
 app.listen(port, () => {
   console.log(`Servernya di http://localhost:${port}`);
 });

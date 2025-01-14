@@ -7,6 +7,9 @@ import Employee from "./pages/Employee";
 import Task from "./pages/Task";
 import Salary from "./pages/Salary";
 import { Toaster } from "react-hot-toast";
+import Absen from "./pages/Absen";
+import TaskKaryawan from "./pages/TaskKaryawan";
+import SalaryKaryawan from "./pages/SalaryKaryawan";
 
 function App() {
   return (
@@ -20,6 +23,11 @@ function App() {
         <Route path="/admin/employee" element={<Employee />}></Route>
         <Route path="/admin/task" element={<Task />}></Route>
         <Route path="/admin/salary" element={<Salary />}></Route>
+
+        {/* Karyawan */}
+        <Route path="/absen" element={<Absen/>}></Route>
+        <Route path="/task" element={<TaskKaryawan/>}></Route>
+        <Route path="/salary" element={<SalaryKaryawan/>}></Route>
       </Routes>
     </>
   );
