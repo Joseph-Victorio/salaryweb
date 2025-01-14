@@ -25,7 +25,6 @@ const Employee = () => {
     gaji: 0,
   });
 
-  // Fetch employees data
   const fetchEmployees = async () => {
     try {
       const response = await axios.get("http://localhost:5000/karyawan");
@@ -35,7 +34,6 @@ const Employee = () => {
     }
   };
 
-  // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });

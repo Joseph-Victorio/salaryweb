@@ -104,9 +104,9 @@ const Salary = () => {
                       <button
                         className="bg-black text-white px-10 py-2 rounded-lg"
                         onClick={() => handlePay(employee.id)}
-                        disabled={employee.paid}
+                        disabled={employee.status == "Paid"}
                       >
-                        {employee.paid ? "Paid" : "Bayar"}
+                        {employee.status == "Paid" ? "Lunas" : "Bayar"}
                       </button>
                     </td>
                   </tr>

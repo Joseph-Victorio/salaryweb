@@ -1,34 +1,22 @@
+import { useEffect, useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import TaskCard from "../components/TaskCard";
-import EmployeeTable from "../components/TabelKaryawan";
-import TabelKaryawan from "../components/TabelKaryawan";
+import axios from "axios";
 
 const Dashboard = () => {
-  const employees = [
-    {
-      name: "Budi Alam",
-      id: "8475987092834",
-      pangkat: "Manager",
-      time: "13:00",
-      avatar: "/avatar.png",
-    },
-    {
-      name: "Jamal Alim",
-      id: "82345653534634",
-      pangkat: "Staff",
-      time: "13:00",
-      avatar: "/avatar.png",
-    },
-    {
-      name: "Udin",
-      id: "34648394839834",
-      pangkat: "Front End",
-      time: "13:00",
-      avatar: "/avatar.png",
-    },
-  ];
-
+  const [employees, setEmployees] = useState([]);
+  useEffect(() => {
+    const fetchEmployees = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/karyawan");
+        setEmployees(response.data);
+      } catch (error) {
+        console.error("Error fetching employees:", error);
+      }
+    };
+    fetchEmployees();
+  }, []);
   return (
     <div className="flex bg-gradient-to-b from-[#004D40] via-[#00897B] to-[#4DB6AC]">
       <Sidebar />
@@ -83,24 +71,72 @@ const Dashboard = () => {
               </div>
               <div className="flex justify-content gap-16 items-center border-2 rounded-lg p-1 border-black">
                 <div className="flex items-center gap-2">
-                    <img src="/avatar.png" alt="" />
-                    <div className="flex flex-col">
-                        {/* nama */}
-                        <p className="font-bold text-black">Budi Alam</p>
-                        {/* kerjaannya */}
-                        <p className="text-white">UI design</p>
-                    </div>
+                  <img src="/avatar.png" alt="" />
+                  <div className="flex flex-col">
+                    {/* nama */}
+                    <p className="font-bold text-black">Budi Alam</p>
+                    {/* kerjaannya */}
+                    <p className="text-white">UI design</p>
+                  </div>
                 </div>
                 {/* waktu */}
                 <div className="flex gap-5">
-                    <span className="bg-white rounded-lg px-2">08:00</span>
-                    <span className="bg-white rounded-lg px-2">12:00</span>
+                  <span className="bg-white rounded-lg px-2">08:00</span>
+                  <span className="bg-white rounded-lg px-2">12:00</span>
                 </div>
               </div>
             </div>
           </div>
           <div className="mt-10">
-            <TabelKaryawan employees={employees} />
+            <table className="w-full bg-foreground text-white rounded-lg shadow-md">
+              <thead>
+                <tr className="text-left bg-primary text-black">
+                  <th className="p-3  border-b">Employee</th>
+                  <th className="p-3  border-b">Employee ID</th>
+                  <th className="p-3  border-b">Pangkat</th>
+                  <th className="p-3  border-b text-center">Time</th>
+                  <th className="p-3  border-b"></th>
+                </tr>
+              </thead>
+              <tbody>
+                {employees.map((employee, index) => (
+                  <tr key={index} className="hover:bg-background">
+                    <td className="p-3 flex items-center gap-3 border-b text-black font-bold">
+                      <img
+                        src={"/avatar.png"}
+                        alt={employee.name}
+                        className="w-8 h-8 rounded-full"
+                      />
+                      <div className="flex flex-col">
+                        <p className="text-black">
+                          {employee.nama_depan + " " + employee.nama_belakang}
+                        </p>
+                        <p className="text-white text-[10px]">
+                          {employee.posisi}
+                        </p>
+                      </div>
+                    </td>
+                    <td className="p-3 border-b">{employee.id}</td>
+                    <td className="p-3 border-b">{employee.pangkat}</td>
+                    <td className="border-b">
+                      <div className="flex gap-5 justify-center">
+                        <span className="bg-white px-2 rounded-lg text-black">
+                          {employee.time}
+                        </span>
+                        <span className="bg-white px-2 rounded-lg text-black">
+                          {employee.time}
+                        </span>
+                      </div>
+                    </td>
+                    <td className="p-3 border-b">
+                      <button onClick={() => hapus(employee.id)}>
+                        <img src="/minus.png" alt="" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </main>
       </div>

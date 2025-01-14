@@ -46,18 +46,18 @@ const Task = () => {
     }
   };
 
-  const handleDeleteTask = async (id) => {
-    try {
-      const response = await fetch(`${API_URL}/${id}`, {
-        method: "DELETE",
-      });
-      if (response.ok) {
-        fetchTasks();
-      }
-    } catch (error) {
-      console.error("Error deleting task:", error);
-    }
-  };
+  // const handleDeleteTask = async (id) => {
+  //   try {
+  //     const response = await fetch(`${API_URL}/${id}`, {
+  //       method: "DELETE",
+  //     });
+  //     if (response.ok) {
+  //       fetchTasks();
+  //     }
+  //   } catch (error) {
+  //     console.error("Error deleting task:", error);
+  //   }
+  // };
 
   return (
     <div className="flex bg-gradient-to-b from-[#004D40] via-[#00897B] to-[#4DB6AC] min-h-screen ">
@@ -107,14 +107,14 @@ const Task = () => {
                   <td className={task.status === "Sukses" ? "text-green-500" : "text-red-500"}>
                     {task.status}
                   </td>
-                  <td>
+                  {/* <td>
                     <button
                       className="text-red-500 hover:underline"
                       onClick={() => handleDeleteTask(task.id)}
                     >
                       Hapus
                     </button>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
           </tbody>
