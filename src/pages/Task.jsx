@@ -12,7 +12,6 @@ const Task = () => {
 
   const API_URL = "http://localhost:5000/tasks"; 
 
-  // Fetch tasks from the API
   const fetchTasks = async () => {
     try {
       const response = await fetch(API_URL);
@@ -27,7 +26,6 @@ const Task = () => {
     fetchTasks();
   }, []);
 
-  // Add new task
   const handleAddTask = async (e) => {
     e.preventDefault();
     try {
@@ -48,7 +46,6 @@ const Task = () => {
     }
   };
 
-  // Delete task
   const handleDeleteTask = async (id) => {
     try {
       const response = await fetch(`${API_URL}/${id}`, {
