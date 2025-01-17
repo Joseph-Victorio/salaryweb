@@ -83,11 +83,18 @@ const SalaryKaryawan = () => {
         {karyawanData ? (
           <div className="bg-black p-1 text-white rounded-lg">
             <p className="text-[100px] text-center">
-              {karyawanData.jam_masuk === "" || karyawanData.jam_keluar === ""
-                ? formatCurrency(
-                    karyawanData.gaji - (karyawanData.gaji * 10) / 100 - kurang
-                  )
-                : formatCurrency(karyawanData.gaji)}
+            {karyawanData.jam_masuk === "" || karyawanData.jam_keluar === ""
+              ? 
+                formatCurrency(
+                  karyawanData.gaji - (karyawanData.gaji * 10) / 100 
+                )
+              : karyawanData.jam_masuk !== "" || karyawanData.jam_keluar !== ""
+              ? 
+                formatCurrency(
+                  karyawanData.gaji - (karyawanData.gaji * 20) / 100
+                )
+              : 
+                formatCurrency(karyawanData.gaji)}
             </p>
           </div>
         ) : (
