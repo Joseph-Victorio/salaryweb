@@ -4,8 +4,22 @@ import axios from "axios";
 import Clock from "react-live-clock";
 
 const SalaryKaryawan = () => {
-  const [karyawanData, setKaryawanData] = useState(null);
+  const [karyawanData, setKaryawanData] = useState("");
   const [username, setUsername] = useState(null);
+  const [taskData, setTaskData] = useState([]);
+  const [kurang, setKurang] = useState(0);
+
+  useEffect(() => {
+    const fetchAllTask = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/tasks");
+        setTaskData(res.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetchAllTask();
+  }, []);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
@@ -41,6 +55,17 @@ const SalaryKaryawan = () => {
     }
   }, [username]);
 
+  useEffect(() => {
+    if (taskData.length > 0 && karyawanData) {
+      const penalty = taskData.reduce((total, task) => {
+        return task.status !== "Sukses"
+          ? total + (karyawanData.gaji * 10) / 100
+          : total;
+      }, 0);
+      setKurang(penalty);
+    }
+  }, [taskData, karyawanData]);
+
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -58,7 +83,11 @@ const SalaryKaryawan = () => {
         {karyawanData ? (
           <div className="bg-black p-1 text-white rounded-lg">
             <p className="text-[100px] text-center">
-              {formatCurrency(karyawanData.gaji)}
+              {karyawanData.jam_masuk === "" || karyawanData.jam_keluar === ""
+                ? formatCurrency(
+                    karyawanData.gaji - (karyawanData.gaji * 10) / 100 - kurang
+                  )
+                : formatCurrency(karyawanData.gaji)}
             </p>
           </div>
         ) : (
@@ -72,6 +101,62 @@ const SalaryKaryawan = () => {
             className="text-white text-5xl "
           />
         </div>
+        {taskData.map((item, index) => (
+          <div
+            className="flex flex-col gap-2 px-10 border-b-2 pb-2 border-black"
+            key={index}
+          >
+            <div className="flex justify-between">
+              <div className="flex gap-2">
+                <img src="/clock.png" alt="" />
+                <p>{item.nama_tugas}</p>
+              </div>
+              <div>
+                {item.status !== "Sukses" ? "Task Pending" : "Task Completed"}
+              </div>
+            </div>
+            {item.status !== "Sukses" && (
+              <div className="flex justify-between pt-2 border-t-2 border-black">
+                <div className="flex gap-2">
+                  <p>Potongan</p>
+                </div>
+                <div>{formatCurrency((karyawanData.gaji * 10) / 100)}</div>
+              </div>
+            )}
+          </div>
+        ))}
+
+        {karyawanData ? (
+          <>
+            {karyawanData.jam_masuk === "" || karyawanData.jam_keluar === "" ? (
+              <>
+                <div className="flex justify-between gap-2 px-10 border-b-2 pb-2 border-black mt-2">
+                  <div className="flex gap-2">
+                    <img src="/clock.png" alt="" />
+                    <p>Absen</p>
+                  </div>
+                  <div>Miss</div>
+                </div>
+                <div className="flex justify-between gap-2 px-10 border-b-2 pb-2 border-black pt-2 ">
+                  <div className="flex gap-2">
+                    <p>Potongan</p>
+                  </div>
+                  <div>{formatCurrency((karyawanData.gaji * 10) / 100)}</div>
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="flex justify-between gap-2 px-10 border-b-2 pb-2 border-black border-t-2 pt-2 mt-2">
+                  <div className="flex gap-2">
+                    <img src="/clock.png" alt="" />
+                    <p>Absen</p>
+                  </div>
+                  <div>Hadir</div>
+                </div>
+              </>
+            )}
+          </>
+        ) : null}
       </div>
     </div>
   );
