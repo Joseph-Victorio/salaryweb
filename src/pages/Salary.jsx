@@ -17,15 +17,33 @@ const Salary = () => {
     };
     fetchEmployees();
   }, []);
+
   const handlePay = async (employeeId) => {
+  
+    const employee = employees.find((emp) => emp.id === employeeId);
+
+    
+    const paidStatus = localStorage.getItem(`paid_${employeeId}`);
+    if (paidStatus === "true" || employee.status === "Paid") {
+      console.log("This employee's salary is already paid.");
+      return; 
+    }
+
     try {
       const response = await axios.put(
         `http://localhost:5000/karyawan/${employeeId}`,
         {
-          status: "Paid", // Ensure this field is correct
+          status: "Paid", 
         }
       );
       console.log(response.data);
+
+      localStorage.setItem(`paid_${employeeId}`, "true"); 
+      setEmployees((prevEmployees) =>
+        prevEmployees.map((emp) =>
+          emp.id === employeeId ? { ...emp, status: "Paid" } : emp
+        )
+      );
     } catch (error) {
       console.error("Error updating payment status:", error);
     }
@@ -80,9 +98,7 @@ const Salary = () => {
                         <p className="text-black">
                           {employee.nama_depan + " " + employee.nama_belakang}
                         </p>
-                        <p className="text-white text-[10px]">
-                          {employee.posisi}
-                        </p>
+                        <p className="text-white text-[10px]">{employee.posisi}</p>
                       </div>
                     </td>
                     <td className="p-3 border-b">{employee.id}</td>
@@ -94,7 +110,7 @@ const Salary = () => {
                       }).format(employee.gaji)}
                     </td>
                     <td className="p-3 border-b">
-                      {employee.status == "Paid" ? (
+                      {employee.status === "Paid" ? (
                         <p className="text-green-500">Sukses</p>
                       ) : (
                         <p className="text-red-500">Pending</p>
@@ -104,9 +120,9 @@ const Salary = () => {
                       <button
                         className="bg-black text-white px-10 py-2 rounded-lg"
                         onClick={() => handlePay(employee.id)}
-                        disabled={employee.status == "Paid"}
+                        disabled={employee.status === "Paid"}
                       >
-                        {employee.status == "Paid" ? "Lunas" : "Bayar"}
+                        {employee.status === "Paid" ? "Lunas" : "Bayar"}
                       </button>
                     </td>
                   </tr>

@@ -16,7 +16,6 @@ const Absen = () => {
   const [jamKeluar, setJamKeluar] = useState("Belum absen keluar");
   const navigate = useNavigate();
 
-  
   useEffect(() => {
     const storedUsername = localStorage.getItem("username");
     const storedJamMasuk = localStorage.getItem("jamMasuk");
@@ -65,7 +64,7 @@ const Absen = () => {
   const handleClockIn = async () => {
     const currentTime = moment().format("HH:mm");
     setJamMasuk(currentTime);
-    localStorage.setItem("jamMasuk", currentTime); 
+    localStorage.setItem("jamMasuk", currentTime);
 
     try {
       await axios.put("http://localhost:5000/absen", {
@@ -83,7 +82,7 @@ const Absen = () => {
   const handleClockOut = async () => {
     const currentTime = moment().format("HH:mm");
     setJamKeluar(currentTime);
-    localStorage.setItem("jamKeluar", currentTime); 
+    localStorage.setItem("jamKeluar", currentTime);
 
     try {
       await axios.put("http://localhost:5000/absen", {
@@ -95,6 +94,21 @@ const Absen = () => {
     } catch (error) {
       console.error("Error updating clock-out time:", error);
       alert("Failed to update clock-out time.");
+    }
+  };
+
+  const handleResetAttendance = async () => {
+    try {
+      await axios.put("http://localhost:5000/absen/reset", {
+        username,
+      });
+      setJamMasuk("Belum absen masuk");
+      setJamKeluar("Belum absen keluar");
+
+      toast.success("Absen telah direset di database.");
+    } catch (error) {
+      console.error("Error resetting attendance:", error);
+      toast.error("Gagal mereset data absen di database.");
     }
   };
 
@@ -140,6 +154,14 @@ const Absen = () => {
               timezone={"Asia/Jakarta"}
               className="text-white text-5xl "
             />
+          </div>
+          <div className="flex justify-center mt-5">
+            <button
+              onClick={handleResetAttendance}
+              className="bg-red-500 text-white px-4 py-2 rounded-lg text-2xl"
+            >
+              Belum Hadir
+            </button>
           </div>
         </main>
       </div>

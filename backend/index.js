@@ -315,6 +315,16 @@ app.post("/login-karyawan", (req, res) => {
     });
   });
 });
+app.put('/absen/reset', async (req, res) => {
+  const { username } = req.body;
+  
+  try {
+    await db.query('UPDATE karyawan SET jam_masuk = NULL, jam_keluar = NULL WHERE username = ?', [username]);
+    res.status(200).send({ message: "Attendance data has been reset." });
+  } catch (error) {
+    res.status(500).send({ message: "Failed to reset attendance data." });
+  }
+});
 app.listen(port, () => {
   console.log(`Servernya di http://localhost:${port}`);
 });

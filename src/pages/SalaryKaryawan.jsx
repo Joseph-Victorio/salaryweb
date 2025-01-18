@@ -165,7 +165,7 @@ const SalaryKaryawan = () => {
 
         {karyawanData ? (
           <>
-            {karyawanData.jam_masuk === "" || karyawanData.jam_keluar === "" ? (
+            {karyawanData.jam_masuk === null || karyawanData.jam_keluar === null ? (
               <>
                 <div className="flex justify-between gap-2 px-10 border-b-2 pb-2 border-black mt-2">
                   <div className="flex gap-2">
