@@ -8,6 +8,7 @@ const port = 5000;
 
 app.use(cors());
 app.use(bodyParser.json());
+app.use(express.json());
 
 // Database connection
 const db = mysql.createConnection({
@@ -224,6 +225,29 @@ app.put("/absen", (req, res) => {
     res.json({ message: `${columnToUpdate} updated successfully!` });
   });
 });
+
+app.put("/karyawan-gaji/:username", (req, res) => {
+  const { username } = req.params;
+  const { gaji } = req.body;
+
+  console.log("Request received:", username, gaji);
+
+  if (!gaji) {
+    return res.status(400).json({ error: "Gaji is required" });
+  }
+
+  const sql = "UPDATE karyawan SET gaji = ? WHERE username = ?";
+  db.query(sql, [gaji, username], (err, result) => {
+    if (err) {
+      console.error("Error updating salary:", err);
+      res.status(500).json({ error: "Failed to update salary" });
+    } else {
+      console.log("Salary updated:", result);
+      res.json({ message: "Salary updated successfully" });
+    }
+  });
+});
+
 
 app.get('/absen/:username', (req, res) => {
   const { username } = req.params;

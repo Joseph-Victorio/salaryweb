@@ -8,7 +8,19 @@ const SalaryKaryawan = () => {
   const [username, setUsername] = useState(null);
   const [taskData, setTaskData] = useState([]);
   const [kurang, setKurang] = useState(0);
+  const [taskStatus, setTaskStatus] = useState([]);
 
+  useEffect(() => {
+    if (taskData.length > 0) {
+      const updatedStatus = taskData.reverse().map((task) => {
+        return {
+          id: task.id,
+          status: task.status,
+        };
+      });
+      setTaskStatus(updatedStatus);
+    }
+  }, [taskData]);
   useEffect(() => {
     const fetchAllTask = async () => {
       try {
@@ -55,17 +67,6 @@ const SalaryKaryawan = () => {
     }
   }, [username]);
 
-  useEffect(() => {
-    if (taskData.length > 0 && karyawanData) {
-      const penalty = taskData.reduce((total, task) => {
-        return task.status !== "Sukses"
-          ? total + (karyawanData.gaji * 10) / 100
-          : total;
-      }, 0);
-      setKurang(penalty);
-    }
-  }, [taskData, karyawanData]);
-
   const formatCurrency = (value) => {
     return new Intl.NumberFormat("id-ID", {
       style: "currency",
@@ -74,6 +75,20 @@ const SalaryKaryawan = () => {
       maximumFractionDigits: 0,
     }).format(value);
   };
+  const updateGajiInDatabase = async (updatedGaji) => {
+    try {
+      if (username) {
+        console.log("Sending request to update gaji:", updatedGaji);
+        const response = await axios.put(`http://localhost:5000/karyawan-gaji/${username}`, {
+          gaji: updatedGaji,
+        });
+        console.log("Response from server:", response.data);
+      }
+    } catch (error) {
+      console.error("Failed to update gaji:", error.response?.data || error.message);
+    }
+  };
+  console.log(taskStatus[1]);
 
   return (
     <div className="flex bg-gradient-to-b from-[#004D40] via-[#00897B] to-[#4DB6AC] min-h-screen">
@@ -81,22 +96,37 @@ const SalaryKaryawan = () => {
       <div className="ml-64 w-full border-l-2 border-black p-5">
         <h2 className="text-white text-[100px] text-center">GAJI</h2>
         {karyawanData ? (
-          <div className="bg-black p-1 text-white rounded-lg">
-            <p className="text-[100px] text-center">
-            {karyawanData.jam_masuk === "" || karyawanData.jam_keluar === ""
-              ? 
-                formatCurrency(
-                  karyawanData.gaji - (karyawanData.gaji * 10) / 100 
-                )
-              : karyawanData.jam_masuk !== "" || karyawanData.jam_keluar !== ""
-              ? 
-                formatCurrency(
-                  karyawanData.gaji - (karyawanData.gaji * 20) / 100
-                )
-              : 
-                formatCurrency(karyawanData.gaji)}
-            </p>
-          </div>
+         <div className="bg-black p-1 text-white rounded-lg">
+         <p className="text-[100px] text-center">
+           {(() => {
+             let updatedGaji = karyawanData.gaji;
+       
+             if (
+               karyawanData.jam_masuk === "" ||
+               (karyawanData.jam_keluar === "" &&
+                 taskStatus.some((status) => status.status === "Not Yet"))
+             ) {
+               updatedGaji -= (karyawanData.gaji * 20) / 100;
+             } else if (
+               karyawanData.jam_masuk !== "" &&
+               karyawanData.jam_keluar !== ""
+             ) {
+               updatedGaji -= (karyawanData.gaji * 10) / 100;
+             } else if (
+               karyawanData.jam_masuk === "" ||
+               karyawanData.jam_keluar === ""
+             ) {
+               updatedGaji -= (karyawanData.gaji * 10) / 100;
+             } else {
+               updatedGaji = karyawanData.gaji;
+             }
+             updateGajiInDatabase(updatedGaji);
+       
+             return formatCurrency(updatedGaji);
+           })()}
+         </p>
+       </div>
+       
         ) : (
           <p className="text-white mt-5">Memuat data gaji...</p>
         )}
